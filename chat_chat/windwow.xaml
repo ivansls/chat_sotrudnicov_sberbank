@@ -1,0 +1,30 @@
+﻿<Window x:Class="chat_chat.windwow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:chat_chat"
+        mc:Ignorable="d"
+        Title="windwow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="297*"/>
+            <ColumnDefinition Width="3*"/>
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock TextWrapping="Wrap" Text="Сожители:" VerticalAlignment="Center"/>
+        <Button x:Name="exit" Content="Выйти" Grid.Row="2" Click="exit_Click"/>
+        <Button x:Name="message" Grid.Column="1" Content="Отослать весточку" HorizontalAlignment="Left"  Grid.Row="2" Width="150" Grid.ColumnSpan="2" Margin="450,0,0,0" Click="message_Click"/>
+        <TextBox x:Name="vestohka" Grid.Column="1" HorizontalAlignment="Left"  Grid.Row="2" TextWrapping="Wrap" Text="Нацарапать тут" Width="450"/>
+        <Button x:Name="log_chat" Grid.Column="1" Content="Что случилось?" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="list_user" Margin="0,54,0,54" Grid.RowSpan="3"/>
+        <ListBox x:Name="list_message" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,54,0,54" Grid.RowSpan="3"/>
+    </Grid>
+</Window>
