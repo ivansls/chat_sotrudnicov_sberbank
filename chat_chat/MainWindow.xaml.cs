@@ -31,7 +31,7 @@ namespace chat_chat
         private void craete_Click(object sender, RoutedEventArgs e)
         {
             IsServer = true;
-            windwow windwow = new windwow();
+            windwow windwow = new windwow(name.Text, ip_con.Text);
             windwow.Show();
             this.Close();
         }
@@ -39,7 +39,7 @@ namespace chat_chat
         private void connect_Click(object sender, RoutedEventArgs e)
         {
             IsServer = false;
-            windwow windwow = new windwow();
+            windwow windwow = new windwow(name.Text, ip_con.Text);
             windwow.Show();
 
             this.Close();

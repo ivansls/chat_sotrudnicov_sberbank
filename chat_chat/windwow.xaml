@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chat_chat"
         mc:Ignorable="d"
-        Title="windwow" Height="450" Width="800">
+        Title="windwow" Height="450" Width="800" Background="Black">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="297*"/>
-            <ColumnDefinition Width="3*"/>
-
+            <ColumnDefinition Width="80*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -19,12 +19,62 @@
             <RowDefinition Height="6*"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock TextWrapping="Wrap" Text="Сожители:" VerticalAlignment="Center"/>
-        <Button x:Name="exit" Content="Выйти" Grid.Row="2" Click="exit_Click"/>
-        <Button x:Name="message" Grid.Column="1" Content="Отослать весточку" HorizontalAlignment="Left"  Grid.Row="2" Width="150" Grid.ColumnSpan="2" Margin="450,0,0,0" Click="message_Click"/>
-        <TextBox x:Name="vestohka" Grid.Column="1" HorizontalAlignment="Left"  Grid.Row="2" TextWrapping="Wrap" Text="Нацарапать тут" Width="450"/>
-        <Button x:Name="log_chat" Grid.Column="1" Content="Что случилось?" Grid.ColumnSpan="2"/>
-        <ListBox x:Name="list_user" Margin="0,54,0,54" Grid.RowSpan="3"/>
-        <ListBox x:Name="list_message" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,54,0,54" Grid.RowSpan="3"/>
+        <TextBlock TextWrapping="Wrap" Text="Сожители:" VerticalAlignment="Center">
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Button x:Name="exit" Content="Выйти" Grid.Row="2" Grid.ColumnSpan="2" Click="exit_Click">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="message" Grid.Column="3" Content="Отослать весточку"   Grid.Row="2" Click="message_Click">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
+        <TextBox x:Name="vestohka" Grid.Column="2"  Grid.Row="2" TextWrapping="Wrap" Text="Нацарапать тут" Background="Black">
+            <TextBox.Foreground>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </RadialGradientBrush>
+            </TextBox.Foreground>
+        </TextBox>
+        <Button x:Name="log_chat" Grid.Column="2" Content="Что случилось?" Grid.ColumnSpan="2">
+            <Button.Background>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </RadialGradientBrush>
+            </Button.Background>
+        </Button>
+        <ListBox x:Name="list_user"  Grid.Row="1" Grid.ColumnSpan="2" Background="Black">
+            <ListBox.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </LinearGradientBrush>
+            </ListBox.Foreground>
+        </ListBox>
+        <ListBox x:Name="list_message" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Background="Black">
+            <ListBox.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </LinearGradientBrush>
+            </ListBox.Foreground>
+        </ListBox>
+        <Image Grid.Column="1" Source="C:\Сш\chat\chat_chat\picture\rosa.png"/>
     </Grid>
 </Window>
