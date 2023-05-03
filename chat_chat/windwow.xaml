@@ -51,7 +51,7 @@
                 </RadialGradientBrush>
             </TextBox.Foreground>
         </TextBox>
-        <Button x:Name="log_chat" Grid.Column="2" Content="Что случилось?" Grid.ColumnSpan="2">
+        <Button x:Name="log_chat" Grid.Column="2" Content="Что случилось?" Grid.ColumnSpan="2" Click="log_chat_Click">
             <Button.Background>
                 <RadialGradientBrush>
                     <GradientStop Color="#FFF9D300" Offset="1"/>
@@ -59,6 +59,16 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+
+        <ListBox x:Name="list_user_log"  Grid.Row="1" Grid.ColumnSpan="2" Background="Black" Visibility="Hidden">
+            <ListBox.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFF9D300" Offset="1"/>
+                    <GradientStop Color="#FFCE9200"/>
+                </LinearGradientBrush>
+            </ListBox.Foreground>
+        </ListBox>
+
         <ListBox x:Name="list_user"  Grid.Row="1" Grid.ColumnSpan="2" Background="Black">
             <ListBox.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

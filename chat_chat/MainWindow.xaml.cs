@@ -32,7 +32,9 @@ namespace chat_chat
         {
             IsServer = true;
             windwow windwow = new windwow(name.Text, ip_con.Text);
+            
             windwow.Show();
+            
             this.Close();
         }
 
@@ -40,8 +42,9 @@ namespace chat_chat
         {
             IsServer = false;
             windwow windwow = new windwow(name.Text, ip_con.Text);
+            
             windwow.Show();
-
+            
             this.Close();
         }
 
