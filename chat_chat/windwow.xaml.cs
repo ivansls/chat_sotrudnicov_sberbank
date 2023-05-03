@@ -47,6 +47,12 @@ namespace chat_chat
                 ListenClients();
 
                 // тут надо сделать еще один сокет для клиента, чтобы у тебя был и сервак и клиент одновременно
+                user = "/username" + " " + "ADMINISTRATOR";
+
+                socket_server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                socket_server.ConnectAsync("127.0.0.1", 8888); //ip - 127.0.0.1
+                RecieveMessage_Serv(socket_server);
+                SendMessage(socket_server, user);
             }
             else
             {
@@ -66,6 +72,7 @@ namespace chat_chat
         {
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
+            SendMessage(socket, "/diskonect" + " " + name);
             this.Close();
         }
 
@@ -78,6 +85,9 @@ namespace chat_chat
             {
                 var client = await socket.AcceptAsync();
                 clients.Add(client);
+                
+                list_user_log.Items.Add(client.RemoteEndPoint);
+                
                 RecieveMessage(client);
                 
             }
@@ -91,10 +101,19 @@ namespace chat_chat
                 byte[] bytes = new byte[1024];
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
-                list_message.Items.Add($"[Весточка от {message}]: {message}");
+
                 //MessageBox.Show(message.TrimStart());
-
-
+                list_message.Items.Add($"[Весточка от {name}]: {message}");
+                if (message.StartsWith("/diskonect"))
+                {
+                    string[] a = message.Split(" ");
+                    MessageBox.Show(a[1]);
+                    foreach (var i in list_user.Items)
+                    {
+                        
+                        list_user.Items.Remove(list_user.Items.IndexOf("/username " + a[1]));
+                    }
+                }
 
                 if (MainWindow.IsServer == true)
                 {
@@ -104,6 +123,7 @@ namespace chat_chat
                         if (message.StartsWith("/username"))
                         {
                             //SendMessage(item, message);
+                            users.Add(message);
                             list_user.Items.Add(message);
                             foreach (var items in list_user.Items)
                             {
@@ -118,6 +138,7 @@ namespace chat_chat
                         }
                         else
                         {
+                            
                             SendMessage(item, message);
                         }
                     }
@@ -136,6 +157,9 @@ namespace chat_chat
                         }
                         //users.Clear();
                     }
+
+                    
+
                     //list_message.Items.Add(message);
                 }
 
@@ -151,9 +175,53 @@ namespace chat_chat
             await client.SendAsync(bytes, SocketFlags.None);
         }
 
+
+        private async Task RecieveMessage_Serv(Socket client)
+        {
+            while (true)
+            {
+                byte[] bytes = new byte[1024];
+                await client.ReceiveAsync(bytes, SocketFlags.None);
+                string message = Encoding.UTF8.GetString(bytes);
+                list_message.Items.Add($"[Весточка от {name}]: {message}");
+                if (message.StartsWith("/username"))
+                {
+                    list_user.Items.Add(message);
+                }
+            }
+
+        }
+
+
+
+
+
         private void message_Click(object sender, RoutedEventArgs e)
         {
-            SendMessage(socket,vestohka.Text);
+            if (MainWindow.IsServer == true)
+            {
+                SendMessage(socket_server, vestohka.Text);
+            }
+            else
+            {
+                SendMessage(socket, vestohka.Text);
+            }
+        }
+
+        private void log_chat_Click(object sender, RoutedEventArgs e)
+        {
+            if (c == 0)
+            {
+                list_user.Visibility = Visibility.Hidden;
+                list_user_log.Visibility = Visibility.Visible;
+                c = 1;
+            }
+            else if (c == 1)
+            {
+                list_user.Visibility = Visibility.Visible;
+                list_user_log.Visibility = Visibility.Hidden;
+                c = 0;
+            }
         }
     }
 }
