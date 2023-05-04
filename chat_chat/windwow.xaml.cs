@@ -104,7 +104,7 @@ namespace chat_chat
             
             while (true)
             {
-                string time = DateTime.Now.ToString();
+               
                 byte[] bytes = new byte[1024];
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
@@ -140,6 +140,7 @@ namespace chat_chat
                             //SendMessage(item, message);
                             users.Add(message);
                             //list_user.Items.Add(message);
+                            list_message.Items.Add(message);
                             list_user.Items.Add(message);
                             foreach (var items in list_user.Items)
                             {
@@ -175,7 +176,7 @@ namespace chat_chat
                     else
                     {
                         string[] ms = message.Split("{");
-                        list_message.Items.Add($"[Весточка от {ms[0]} - {time}]: {ms[1]}");
+                        list_message.Items.Add($"[Весточка от {ms[0]} - {ms[1]}]: {ms[2]}");
                     }
 
                     
@@ -201,7 +202,7 @@ namespace chat_chat
         {
             while (true)
             {
-                string time = DateTime.Now.ToString();
+                
                 byte[] bytes = new byte[1024];
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
@@ -226,7 +227,7 @@ namespace chat_chat
                 else
                 {
                     string[] ms = message.Split("{");
-                    list_message.Items.Add($"[Весточка от {ms[0]} - {time}]: {ms[1]}");
+                    list_message.Items.Add($"[Весточка от {ms[0]} - {ms[1]}]: {ms[2]}");
                 }
             }
 
@@ -238,15 +239,16 @@ namespace chat_chat
 
         private void message_Click(object sender, RoutedEventArgs e)
         {
+            string time = DateTime.Now.ToString();
             string mes;
             if (MainWindow.IsServer == true)
             {
-                mes = "ADMINISTRATOR" + "{" + vestohka.Text;
+                mes = "ADMINISTRATOR" + "{" + time.ToString() + "{" + vestohka.Text;
                 SendMessage(socket_server, mes);
             }
             else
             {
-                mes = name + "{" + vestohka.Text;
+                mes = name + "{" + time.ToString() + "{" + vestohka.Text;
                 SendMessage(socket, mes);
             }
         }
