@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace chat_chat
 {
@@ -36,6 +37,7 @@ namespace chat_chat
             name = name_;
             ip = ip_;
             InitializeComponent();
+            //list_user.ItemsSource= users;
             user = "/username" + " " + name;
             if (MainWindow.IsServer == true)
             {
@@ -73,6 +75,7 @@ namespace chat_chat
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
             SendMessage(socket, "/diskonect" + " " + name);
+            
             this.Close();
         }
 
@@ -91,11 +94,13 @@ namespace chat_chat
                 RecieveMessage(client);
                 
             }
+
         }
 
         private async Task RecieveMessage(Socket client)
         {
             /*list_user.Items.Clear();*/
+            
             while (true)
             {
                 byte[] bytes = new byte[1024];
@@ -107,12 +112,14 @@ namespace chat_chat
                 if (message.StartsWith("/diskonect"))
                 {
                     string[] a = message.Split(" ");
-                    MessageBox.Show(a[1]);
-                    foreach (var i in list_user.Items)
+                    //MessageBox.Show(a[1]);
+                    foreach (string i in list_user.Items)
                     {
-                        
-                        list_user.Items.Remove(list_user.Items.IndexOf("/username " + a[1]));
+                        string[] b = i.Split("\0");
+                        //MessageBox.Show(b[0] + " " + b[1]);
+                        users.Remove("/username " + a[1]);
                     }
+                    MessageBox.Show("/username " + a[1] + "  777");
                 }
 
                 if (MainWindow.IsServer == true)
@@ -124,7 +131,8 @@ namespace chat_chat
                         {
                             //SendMessage(item, message);
                             users.Add(message);
-                            list_user.Items.Add(message);
+                            //list_user.Items.Add(message);
+                            list_user.ItemsSource = users;
                             foreach (var items in list_user.Items)
                             {
                                 if (message != item.ToString())
@@ -132,8 +140,6 @@ namespace chat_chat
                                     //list_user.Items.Add(message);
                                     SendMessage(item, items.ToString());
                                 }
-                                
-                                
                             }
                         }
                         else
@@ -151,10 +157,11 @@ namespace chat_chat
                     {
                         
                         users.Add(message);
-                        foreach (var item in users)
+                        list_user.ItemsSource = users;
+                        /*foreach (var item in users)
                         {
                             list_user.Items.Add(item);
-                        }
+                        }*/
                         //users.Clear();
                     }
 
@@ -184,9 +191,22 @@ namespace chat_chat
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
                 list_message.Items.Add($"[Весточка от {name}]: {message}");
+                if (message.StartsWith("/diskonect"))
+                {
+                    string[] a = message.Split(" ");
+                    //MessageBox.Show(a[1]);
+                    foreach (var i in list_user.Items)
+                    {
+
+                        list_user.Items.Remove(list_user.Items.IndexOf("/username " + a[1]));
+                    }
+                }
+
                 if (message.StartsWith("/username"))
                 {
-                    list_user.Items.Add(message);
+                    users.Add(message);
+                    //list_user.Items.Add(message);
+                    list_user.ItemsSource = users;
                 }
             }
 

@@ -30,22 +30,40 @@ namespace chat_chat
 
         private void craete_Click(object sender, RoutedEventArgs e)
         {
-            IsServer = true;
-            windwow windwow = new windwow(name.Text, ip_con.Text);
-            
-            windwow.Show();
-            
-            this.Close();
+           
+            if (ip_con.Text == "Канал связи задавать тут" || ip_con.Text == "")
+            {
+                MessageBox.Show("Веди ip");
+            }
+            else
+            {
+                IsServer = true;
+                windwow windwow = new windwow(name.Text, ip_con.Text);
+                windwow.Show();
+                this.Close();
+            }
         }
 
         private void connect_Click(object sender, RoutedEventArgs e)
         {
-            IsServer = false;
-            windwow windwow = new windwow(name.Text, ip_con.Text);
-            
-            windwow.Show();
-            
-            this.Close();
+            if (name.Text == "Погоняло вводи сюда" || name.Text == "")
+            {
+                MessageBox.Show("Веди имя");
+            }
+            else
+            {
+                if (ip_con.Text == "Канал связи задавать тут" || ip_con.Text == "")
+                {
+                    MessageBox.Show("Веди ip");
+                }
+                else
+                {
+                    IsServer = false;
+                    windwow windwow = new windwow(name.Text, ip_con.Text);
+                    windwow.Show();
+                    this.Close();
+                }
+            }
         }
 
     }
