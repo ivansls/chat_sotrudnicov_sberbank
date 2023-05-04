@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Timers;
 
 namespace chat_chat
 {
@@ -52,7 +53,7 @@ namespace chat_chat
                 user = "/username" + " " + "ADMINISTRATOR";
 
                 socket_server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                socket_server.ConnectAsync("127.0.0.1", 8888); //ip - 127.0.0.1
+                socket_server.ConnectAsync(ip, 8888); //ip - 127.0.0.1
                 RecieveMessage_Serv(socket_server);
                 SendMessage(socket_server, user);
             }
@@ -103,12 +104,13 @@ namespace chat_chat
             
             while (true)
             {
+                string time = DateTime.Now.ToString();
                 byte[] bytes = new byte[1024];
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
 
                 //MessageBox.Show(message.TrimStart());
-                list_message.Items.Add($"[Весточка от {name}]: {message}");
+                
                 if (message.StartsWith("/diskonect"))
                 {
                     string[] a = message.Split(" ");
@@ -116,10 +118,16 @@ namespace chat_chat
                     foreach (string i in list_user.Items)
                     {
                         string[] b = i.Split("\0");
-                        //MessageBox.Show(b[0] + " " + b[1]);
-                        users.Remove("/username " + a[1]);
+                        //MessageBox.Show((b[0] + " " + b[1]));
+
+                        if ((b[0] + " " + b[1]) == "/username " + a[1])
+                        {
+                            users.Remove(i);
+                        }
+                        //users.Remove("/username " + a[1]);
                     }
-                    MessageBox.Show("/username " + a[1] + "  777");
+                    list_user.ItemsSource = users;
+                    //MessageBox.Show("/username " + a[1] + "  777");
                 }
 
                 if (MainWindow.IsServer == true)
@@ -132,7 +140,7 @@ namespace chat_chat
                             //SendMessage(item, message);
                             users.Add(message);
                             //list_user.Items.Add(message);
-                            list_user.ItemsSource = users;
+                            list_user.Items.Add(message);
                             foreach (var items in list_user.Items)
                             {
                                 if (message != item.ToString())
@@ -157,12 +165,17 @@ namespace chat_chat
                     {
                         
                         users.Add(message);
-                        list_user.ItemsSource = users;
+                        list_user.Items.Add(message);
                         /*foreach (var item in users)
                         {
                             list_user.Items.Add(item);
                         }*/
                         //users.Clear();
+                    }
+                    else
+                    {
+                        string[] ms = message.Split("{");
+                        list_message.Items.Add($"[Весточка от {ms[0]} - {time}]: {ms[1]}");
                     }
 
                     
@@ -178,6 +191,7 @@ namespace chat_chat
 
         private async Task SendMessage(Socket client, string message)
         {
+
             byte[] bytes = Encoding.UTF8.GetBytes(message);
             await client.SendAsync(bytes, SocketFlags.None);
         }
@@ -187,10 +201,11 @@ namespace chat_chat
         {
             while (true)
             {
+                string time = DateTime.Now.ToString();
                 byte[] bytes = new byte[1024];
                 await client.ReceiveAsync(bytes, SocketFlags.None);
                 string message = Encoding.UTF8.GetString(bytes);
-                list_message.Items.Add($"[Весточка от {name}]: {message}");
+                //list_message.Items.Add($"[Весточка от {name}]: {message}");
                 if (message.StartsWith("/diskonect"))
                 {
                     string[] a = message.Split(" ");
@@ -204,9 +219,14 @@ namespace chat_chat
 
                 if (message.StartsWith("/username"))
                 {
-                    users.Add(message);
+                    //users.Add(message);
                     //list_user.Items.Add(message);
-                    list_user.ItemsSource = users;
+                    list_user.Items.Add(message);
+                }
+                else
+                {
+                    string[] ms = message.Split("{");
+                    list_message.Items.Add($"[Весточка от {ms[0]} - {time}]: {ms[1]}");
                 }
             }
 
@@ -218,13 +238,16 @@ namespace chat_chat
 
         private void message_Click(object sender, RoutedEventArgs e)
         {
+            string mes;
             if (MainWindow.IsServer == true)
             {
-                SendMessage(socket_server, vestohka.Text);
+                mes = "ADMINISTRATOR" + "{" + vestohka.Text;
+                SendMessage(socket_server, mes);
             }
             else
             {
-                SendMessage(socket, vestohka.Text);
+                mes = name + "{" + vestohka.Text;
+                SendMessage(socket, mes);
             }
         }
 
