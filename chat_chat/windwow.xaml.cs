@@ -102,7 +102,7 @@ namespace chat_chat
             {
                 var client = await socket.AcceptAsync();
                 clients.Add(client);
-                MessageBox.Show("111111");
+
                 list_user_log.Items.Add(client.RemoteEndPoint);
                 
                 RecieveMessage(client);
